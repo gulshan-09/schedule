@@ -11,6 +11,11 @@ app.use((req, res, next) => {
     next();
 });
 // Proxy endpoint
+
+app.get("/", (req, res) => {
+  res.status(200).json("Server Start");
+});
+
 app.get('/proxy', async (req, res) => {
     try {
         const { url } = req.query;
