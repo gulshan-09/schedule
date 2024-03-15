@@ -42,7 +42,7 @@ app.get('/api/v1/schedule', async (req, res) => {
         const formattedDate = localDate.toISOString().split('T')[0];
 
         const url = `https://hianime.to/ajax/schedule/list?tzOffset=-330&date=${formattedDate}`;
-        const response = await fetch(`http://localhost:${PORT}/proxy?url=${encodeURIComponent(url)}`);
+        const response = await fetch(url);
         const data = await response.text();
 
         res.send(data);
