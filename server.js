@@ -1,10 +1,8 @@
 const express = require('express');
-const fetch = require('node-fetch');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
-app.use(express.json());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,12 +10,11 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
-
 // Proxy endpoint
+
 app.get("/", (req, res) => {
     res.status(200).json("Server Start");
 });
-
 app.get('/proxy', async (req, res) => {
     try {
         const { url } = req.query;
@@ -45,7 +42,7 @@ app.get('/api/v1/schedule', async (req, res) => {
         const formattedDate = localDate.toISOString().split('T')[0];
 
         const url = `https://hianime.to/ajax/schedule/list?tzOffset=-330&date=${formattedDate}`;
-        const response = await fetch(url);
+        const response = await fetch(`http://localhost:${PORT}/proxy?url=${encodeURIComponent(url)}`);
         const data = await response.text();
 
         res.send(data);
@@ -56,9 +53,6 @@ app.get('/api/v1/schedule', async (req, res) => {
 });
 
 // Start the server
-if (process.env.NODE_ENV !== 'test') {
-    app.listen(PORT, () => {
-        console.log(`Server is running on http://localhost:${PORT}`);
-    });
-}
-
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
