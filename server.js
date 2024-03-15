@@ -36,12 +36,8 @@ app.get('/proxy', async (req, res) => {
 // Fetch data from hianime.to URL
 app.get('/api/v1/schedule', async (req, res) => {
     try {
-        const currentDate = new Date();
-        const offset = currentDate.getTimezoneOffset() * 60000;
-        const localDate = new Date(currentDate.getTime() - offset);
-        const formattedDate = localDate.toISOString().split('T')[0];
-
-        const url = `https://hianime.to/ajax/schedule/list?tzOffset=-330&date=${formattedDate}`;
+        const { date } = req.query;
+        const url = `https://hianime.to/ajax/schedule/list?tzOffset=-330&date=${date}`;
         const response = await fetch(url);
         const data = await response.text();
 
