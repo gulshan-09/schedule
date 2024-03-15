@@ -2,7 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
 app.use(express.json());
 
@@ -62,4 +62,3 @@ if (process.env.NODE_ENV !== 'test') {
     });
 }
 
-module.exports = app;
